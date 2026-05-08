@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VG TV</title>
+    
+    <!-- Shaka Player and UI -->
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css"/>
+
+    <style>
+        :root {
+            --bg-color: #FFC0CB; /* Light Pink background */
+            --card-bg: #000000;  /* Black cards */
+            --card-text: #ffffff; /* White text inside cards */
+            --main-text: #000000; /* Black text for the main page (like the loading screen) */
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--main-text);
+        }
+
+        /* --- GRID VIEW STYLES --- */
+        #grid-view {
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: var(--card-bg);
+            color: var(--card-text);
+            border-radius: 8px;
+            border: 1px solid #222;
+            padding: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: #111111;
+        }
+        .card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            background: #fff;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .card .title {
+            font-size: 0.9em;
+            line-height: 1.3;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .loader {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 50px;
+        }
+
+        /* --- PLAYER VIEW STYLES --- */
+        #player-view {
+            display: none; /* Hidden by default */
+            position: fixed;
+            inset: 0;
+            background: #000;
+            align-items: center;
+            justify-content: center;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- GRID VIEW -->
+    <div id="grid-view">
+        <div id="loading" class="loader">Loading channels...</div>
+        <div class="grid" id="channelGrid"></div>
+    </div>
+
+    <!-- PLAYER VIEW (Full Screen) -->
+    <div id="player-view" class="shaka-video-container">
+        <video id="v" autoplay muted playsinline preload="metadata"></video>
+    </div>
+
+    <script>
+        const PLAYLIST_URL = 'https://iptv-org.github.io/iptv/languages/hin.m3u';
+
+        // Check if the URL has stream parameters
+        const params = new URLSearchParams(window.location.search);
+        const streamUrl = params.get('url');
+        const channelName = params.get('name');
+
+        if (streamUrl) {
+            // WE ARE IN PLAYER MODE
+            document.getElementById('grid-view').style.display = 'none';
+            document.getElementById('player-view').style.display = 'flex';
+            if (channelName) {
+                document.title = channelName + " | VG TV";
+            }
+            initPlayer(streamUrl);
+        } else {
+            // WE ARE IN GRID MODE
+            initGrid();
+        }
+
+        // --- GRID LOGIC ---
+        async function initGrid() {
+            try {
+                const response = await fetch(PLAYLIST_URL);
+                const data = await response.text();
+                const channels = parseM3U(data);
+                
+                document.getElementById('loading').style.display = 'none';
+                renderCards(channels);
+            } catch (error) {
+                document.getElementById('loading').innerText = 'Error loading playlist.';
+                console.error(error);
+            }
+        }
+
+        function parseM3U(data) {
+            const lines = data.split('\n');
+            const channels = [];
+            let currentChannel = {};
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (line.startsWith('#EXTINF:')) {
+                    const logoMatch = line.match(/tvg-logo="([^"]+)"/);
+                    currentChannel.logo = logoMatch ? logoMatch[1] : 'https://via.placeholder.com/80x80.png?text=No+Logo';
+                    
+                    const parts = line.split(',');
+                    currentChannel.name = parts.length > 1 ? parts[parts.length - 1].trim() : 'Unknown';
+                } else if (line && !line.startsWith('#')) {
+                    currentChannel.url = line;
+                    channels.push({...currentChannel});
+                    currentChannel = {}; 
+                }
+            });
+            return channels;
+        }
+
+        function renderCards(channels) {
+            const grid = document.getElementById('channelGrid');
+            
+            channels.forEach(channel => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${channel.logo}" alt="${channel.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/80x80.png?text=No+Logo'">
+                    <div class="title">${channel.name}</div>
+                `;
+                
+                // Open the SAME file in a new tab, but add the URL parameters
+                card.onclick = () => {
+                    const url = encodeURIComponent(channel.url);
+                    const name = encodeURIComponent(channel.name);
+                    window.open(`${window.location.pathname}?url=${url}&name=${name}`, '_blank');
+                };
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // --- PLAYER LOGIC ---
+        async function initPlayer(url) {
+            shaka.polyfill.installAll();
+            if (!shaka.Player.isBrowserSupported()) {
+                alert("Browser not supported!");
+                return;
+            }
+
+            const v = document.getElementById("v");
+            const c = document.getElementById("player-view");
+            v.muted = true; // Start muted to bypass browser autoplay blocks
+
+            const p = new shaka.Player();
+            const ui = new shaka.ui.Overlay(p, c, v);
+            await p.attach(v);
+
+            ui.configure({
+                addBigPlayButton: true,
+                addSeekBar: false,
+                controlPanelElements: ['play_pause','time_and_duration','mute','volume','spacer','language','captions','picture_in_picture','quality','fullscreen'],
+                seekBarColors: { base: 'white', buffered: 'red', played: 'green' }
+            });
+
+            p.configure({
+                manifest: { defaultPresentationDelay: 5 },
+                streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2, safeSeekOffset: 5 }
+            });
+
+            try {
+                await p.load(url);
+                v.play().catch(()=>{});
+            } catch(e) {
+                console.error("Stream loading failed", e);
+            }
+
+            // Unmute automatically once playback starts
+            v.addEventListener("play", () => { v.muted = false; }, { once: true });
+        }
+    </script>
+</body>
+</html>
