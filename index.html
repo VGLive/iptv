@@ -1,388 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VG TV</title>
-    
-    <!-- Shaka Player and UI -->
-    <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css"/>
-
-    <!-- Your Red TV Icon Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='80' height='60' x='10' y='20' fill='red' rx='10'/><polygon fill='white' points='40,35 40,65 65,50'/></svg>">
-
-    <style>
-        :root {
-            /* VG TV Specific Colors */
-            --bg-gradient: linear-gradient(135deg, #ffe6e6 0%, #ffb3b3 100%); 
-            --card-bg: #ffffff;  
-            --card-text: #333333; 
-            --main-text: #800000; 
-            --accent-red: #cc0000; 
-            --hover-red: #ffcccc; 
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed; 
-            color: var(--main-text);
-        }
-
-        /* --- NAVIGATION BAR STYLES --- */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(204, 0, 0, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            width: 35px;
-            height: 35px;
-        }
-
-        .nav-left h1 {
-            color: var(--accent-red);
-            font-size: 1.8em;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .cat-dropdown, .search-box {
-            padding: 10px 15px;
-            border: 2px solid var(--accent-red);
-            border-radius: 8px;
-            font-size: 0.95em;
-            color: var(--card-text);
-            background-color: var(--card-bg);
-            outline: none;
-            transition: box-shadow 0.2s;
-        }
-
-        .cat-dropdown {
-            font-weight: 600;
-            color: var(--accent-red);
-            cursor: pointer;
-        }
-
-        .cat-dropdown:focus, .search-box:focus {
-            box-shadow: 0 0 8px rgba(204, 0, 0, 0.4);
-        }
-
-        .search-box {
-            width: 200px;
-        }
-
-        /* Responsive Navigation for Mobile */
-        @media (max-width: 650px) {
-            .top-nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .nav-right {
-                width: 100%;
-                justify-content: space-between;
-            }
-            .search-box {
-                flex-grow: 1;
-                width: auto;
-            }
-        }
-
-        /* --- GRID VIEW STYLES --- */
-        #grid-view {
-            min-height: 100vh;
-        }
-        .grid-container {
-            padding: 30px 20px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .card {
-            background-color: var(--card-bg);
-            color: var(--card-text);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(204, 0, 0, 0.1); 
-            padding: 15px;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            background-color: var(--hover-red);
-            box-shadow: 0 8px 15px rgba(204, 0, 0, 0.2);
-        }
-        .card img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 12px;
-            background: #1e1e1e; /* Dark background so white logos are visible */
-            border-radius: 8px;
-            padding: 5px;
-        }
-        .card .title {
-            font-size: 0.95em;
-            line-height: 1.3;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            font-weight: 600;
-        }
-        .loader {
-            text-align: center;
-            font-size: 1.2em;
-            margin-top: 50px;
-            font-weight: bold;
-        }
-
-        /* --- PLAYER VIEW STYLES --- */
-        #player-view {
-            display: none; 
-            position: fixed;
-            inset: 0;
-            background: #000;
-            align-items: center;
-            justify-content: center;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: #000;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VG TV</title>
+<script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='80' height='60' x='10' y='20' fill='red' rx='10'/><polygon fill='white' points='40,35 40,65 65,50'/></svg>">
+<style>
+:root{--b:linear-gradient(135deg,#ffe6e6,#ffb3b3);--c:#fff;--t:#333;--m:#800000;--a:#cc0000;--h:#ffcccc}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:var(--b);background-attachment:fixed;color:var(--m)}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#fff9;backdrop-filter:blur(10px);position:sticky;top:0;z-index:99}
+.nav-l{display:flex;align-items:center;gap:10px}
+.nav-l h1{color:var(--a);font-size:1.8em;text-transform:uppercase}
+.nav-r{display:flex;gap:10px}
+select,input{padding:10px;border:2px solid var(--a);border-radius:8px;outline:0;background:var(--c);color:var(--t)}
+select{color:var(--a);font-weight:600}
+#gv{min-height:100vh}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px;max-width:1200px;margin:20px auto;padding:0 20px}
+.card{background:var(--c);color:var(--t);border-radius:12px;padding:15px;cursor:pointer;text-align:center;box-shadow:0 4px 6px rgba(204,0,0,.1);transition:.2s}
+.card:hover{transform:translateY(-5px);background:var(--h)}
+.card img{width:80px;height:80px;object-fit:contain;margin-bottom:10px;background:#1e1e1e;border-radius:8px;padding:5px}
+.card .t{font-size:.95em;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#p{display:none;position:fixed;inset:0;background:#000;align-items:center;justify-content:center}
+video{width:100%;height:100%;object-fit:contain;background:#000}
+@media(max-width:650px){.nav{flex-direction:column;gap:15px}.nav-r{width:100%}input{flex-grow:1}}
+</style>
 </head>
 <body>
 
-    <!-- GRID VIEW -->
-    <div id="grid-view">
-        
-        <!-- Top Navigation Bar -->
-        <header class="top-nav">
-            <div class="nav-left">
-                <!-- SVG Logo matching your red icon design -->
-                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                    <rect width="90" height="70" x="5" y="15" fill="#cc0000" rx="12"/>
-                    <polygon fill="white" points="40,35 40,65 65,50"/>
-                </svg>
-                <h1>VG TV</h1>
-            </div>
-            <div class="nav-right">
-                <select id="categoryDropdown" class="cat-dropdown"></select>
-                <input type="text" id="searchInput" class="search-box" placeholder="Search channels...">
-            </div>
-        </header>
-
-        <div id="loading" class="loader">Loading channels...</div>
-        
-        <div class="grid-container">
-            <div class="grid" id="channelGrid"></div>
+<div id="gv">
+    <header class="nav">
+        <div class="nav-l">
+            <svg width="35" height="35" viewBox="0 0 100 100"><rect width="90" height="70" x="5" y="15" fill="#c00" rx="12"/><polygon fill="#fff" points="40,35 40,65 65,50"/></svg>
+            <h1>VG TV</h1>
         </div>
-    </div>
+        <div class="nav-r">
+            <select id="cat"></select>
+            <input type="text" id="src" placeholder="Search channels...">
+        </div>
+    </header>
+    <div id="ld" style="text-align:center;margin:50px;font-weight:bold;font-size:1.2em">Loading channels...</div>
+    <div id="g" class="grid"></div>
+</div>
 
-    <!-- PLAYER VIEW (Full Screen) -->
-    <div id="player-view" class="shaka-video-container">
-        <video id="v" autoplay muted playsinline preload="metadata"></video>
-    </div>
+<div id="p"><video id="v" autoplay muted playsinline></video></div>
 
-    <script>
-        const PLAYLIST_URL = 'https://iptv-org.github.io/iptv/languages/hin.m3u';
-        let allChannels = []; 
+<script>
+let ch=[];
+const P=new URLSearchParams(location.search), U=P.get('url'), N=P.get('name');
 
-        const params = new URLSearchParams(window.location.search);
-        const streamUrl = params.get('url');
-        const channelName = params.get('name');
+if(U){
+    document.title=N;
+    document.getElementById('gv').style.display='none';
+    document.getElementById('p').style.display='flex';
+    initP(U);
+}else{
+    initG();
+}
 
-        if (streamUrl) {
-            document.getElementById('grid-view').style.display = 'none';
-            document.getElementById('player-view').style.display = 'flex';
-            if (channelName) {
-                // Changed to show ONLY the channel name
-                document.title = channelName;
+async function initG(){
+    try {
+        const r=await fetch('https://iptv-org.github.io/iptv/languages/hin.m3u');
+        const d=(await r.text()).split('\n');
+        let c={};
+        
+        d.forEach(l=>{
+            l=l.trim();
+            if(l.startsWith('#EXTINF:')){
+                c.l=(l.match(/tvg-logo="([^"]+)"/)||[])[1]||'';
+                c.g=(l.match(/group-title="([^"]+)"/)||[])[1]||'Other';
+                c.n=l.split(',').pop().trim();
+            }else if(l&&!l.startsWith('#')){
+                c.u=l; ch.push({...c}); c={};
             }
-            initPlayer(streamUrl);
-        } else {
-            initGrid();
-        }
+        });
+        
+        document.getElementById('ld').style.display='none';
+        
+        const cg={'All Categories':ch.length};
+        ch.forEach(x=>cg[x.g]=(cg[x.g]||0)+1);
+        
+        const dd=document.getElementById('cat');
+        ['All Categories',...Object.keys(cg).filter(k=>k!=='All Categories').sort()].forEach(k=>{
+            dd.innerHTML+=`<option value="${k}">${k} (${cg[k]})</option>`;
+        });
 
-        // --- GRID & LOGIC ---
-        async function initGrid() {
-            try {
-                const response = await fetch(PLAYLIST_URL);
-                const data = await response.text();
-                allChannels = parseM3U(data);
-                
-                document.getElementById('loading').style.display = 'none';
-                
-                renderDropdown();
-                filterChannels(); // Initial render of all channels
+        dd.onchange=document.getElementById('src').oninput=draw;
+        draw();
+    } catch(e) { document.getElementById('ld').innerText='Error loading playlist'; }
+}
 
-                // Event listeners for dynamic filtering
-                document.getElementById('categoryDropdown').addEventListener('change', filterChannels);
-                document.getElementById('searchInput').addEventListener('input', filterChannels);
+function draw(){
+    const s=document.getElementById('src').value.toLowerCase(), g=document.getElementById('cat').value;
+    document.getElementById('g').innerHTML=ch.filter(x=>(g==='All Categories'||x.g===g)&&x.n.toLowerCase().includes(s))
+        .map(x=>`<div class="card" onclick="window.open('?url=${encodeURIComponent(x.u)}&name=${encodeURIComponent(x.n)}','_blank')">
+            <img src="${x.l}" onerror="this.src='https://via.placeholder.com/80x80.png?text=No+Logo'" loading="lazy">
+            <div class="t">${x.n}</div></div>`).join('')||'<p style="grid-column:1/-1;text-align:center;font-weight:bold">No channels found.</p>';
+}
 
-            } catch (error) {
-                document.getElementById('loading').innerText = 'Error loading playlist.';
-                console.error(error);
-            }
-        }
-
-        function parseM3U(data) {
-            const lines = data.split('\n');
-            const channels = [];
-            let currentChannel = {};
-
-            lines.forEach(line => {
-                line = line.trim();
-                if (line.startsWith('#EXTINF:')) {
-                    const logoMatch = line.match(/tvg-logo="([^"]+)"/);
-                    currentChannel.logo = logoMatch ? logoMatch[1] : 'https://via.placeholder.com/80x80.png?text=No+Logo';
-                    
-                    const groupMatch = line.match(/group-title="([^"]+)"/);
-                    currentChannel.group = groupMatch ? groupMatch[1] : 'Other';
-
-                    const parts = line.split(',');
-                    currentChannel.name = parts.length > 1 ? parts[parts.length - 1].trim() : 'Unknown';
-                } else if (line && !line.startsWith('#')) {
-                    currentChannel.url = line;
-                    channels.push({...currentChannel});
-                    currentChannel = {}; 
-                }
-            });
-            return channels;
-        }
-
-        function renderDropdown() {
-            const dropdown = document.getElementById('categoryDropdown');
-            dropdown.innerHTML = '';
-
-            const categoryCounts = { 'All Categories': allChannels.length };
-            allChannels.forEach(channel => {
-                categoryCounts[channel.group] = (categoryCounts[channel.group] || 0) + 1;
-            });
-
-            const sortedCategories = ['All Categories', ...Object.keys(categoryCounts).filter(cat => cat !== 'All Categories').sort()];
-
-            sortedCategories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category;
-                option.innerText = `${category} (${categoryCounts[category]})`;
-                dropdown.appendChild(option);
-            });
-        }
-
-        function filterChannels() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const selectedCategory = document.getElementById('categoryDropdown').value;
-
-            const filteredChannels = allChannels.filter(channel => {
-                const matchesCategory = selectedCategory === 'All Categories' || channel.group === selectedCategory;
-                const matchesSearch = channel.name.toLowerCase().includes(searchTerm);
-                return matchesCategory && matchesSearch;
-            });
-
-            renderCards(filteredChannels);
-        }
-
-        function renderCards(channelsToRender) {
-            const grid = document.getElementById('channelGrid');
-            grid.innerHTML = ''; 
-            
-            if (channelsToRender.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-weight: bold;">No channels found.</p>';
-                return;
-            }
-
-            channelsToRender.forEach(channel => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <img src="${channel.logo}" alt="${channel.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/80x80.png?text=No+Logo'">
-                    <div class="title">${channel.name}</div>
-                `;
-                
-                card.onclick = () => {
-                    const url = encodeURIComponent(channel.url);
-                    const name = encodeURIComponent(channel.name);
-                    window.open(`${window.location.pathname}?url=${url}&name=${name}`, '_blank');
-                };
-                
-                grid.appendChild(card);
-            });
-        }
-
-        // --- PLAYER LOGIC ---
-        async function initPlayer(url) {
-            shaka.polyfill.installAll();
-            if (!shaka.Player.isBrowserSupported()) {
-                alert("Browser not supported!");
-                return;
-            }
-
-            const v = document.getElementById("v");
-            const c = document.getElementById("player-view");
-            v.muted = true; 
-
-            const p = new shaka.Player();
-            const ui = new shaka.ui.Overlay(p, c, v);
-            await p.attach(v);
-
-            ui.configure({
-                addBigPlayButton: true,
-                addSeekBar: false,
-                controlPanelElements: ['play_pause','time_and_duration','mute','volume','spacer','language','captions','picture_in_picture','quality','fullscreen'],
-                seekBarColors: { base: 'white', buffered: 'red', played: 'green' }
-            });
-
-            p.configure({
-                manifest: { defaultPresentationDelay: 5 },
-                streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2, safeSeekOffset: 5 }
-            });
-
-            try {
-                await p.load(url);
-                v.play().catch(()=>{});
-            } catch(e) {
-                console.error("Stream loading failed", e);
-            }
-
-            v.addEventListener("play", () => { v.muted = false; }, { once: true });
-        }
-    </script>
+async function initP(u){
+    shaka.polyfill.installAll();
+    const v=document.getElementById("v"), p=new shaka.Player(), ui=new shaka.ui.Overlay(p,document.getElementById("p"),v);
+    await p.attach(v);
+    ui.configure({addBigPlayButton:!0,addSeekBar:!1,controlPanelElements:['play_pause','time_and_duration','mute','volume','spacer','language','captions','picture_in_picture','quality','fullscreen']});
+    p.configure({manifest:{defaultPresentationDelay:5},streaming:{lowLatencyMode:!0,bufferingGoal:10,rebufferingGoal:2,safeSeekOffset:5}});
+    await p.load(u);
+    v.onplay=()=>v.muted=true;
+    v.play().catch(()=>{});
+}
+</script>
 </body>
 </html>
