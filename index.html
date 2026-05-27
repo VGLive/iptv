@@ -6,7 +6,7 @@
     <title>VPTV</title>
     <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css"/>
-    <link rel="icon" href="https://i.postimg.cc/02hBbWKp/IP.png">
+    <link rel="icon" href="https://i.postimg.cc/gjQQGW5z/image.png">
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #ffe6e6 0%, #ffb3b3 100%); 
@@ -20,7 +20,10 @@
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-gradient) fixed; color: var(--main-text); }
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(204, 0, 0, 0.15); position: sticky; top: 0; z-index: 100; }
         .nav-left { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { width: 35px; height: 35px; object-fit: contain; border-radius: 6px; }
+        
+        /* Increased logo size here */
+        .logo-icon { width: 50px; height: 50px; object-fit: contain; border-radius: 6px; }
+        
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .cat-dropdown, .search-box { padding: 10px 15px; border: 2px solid var(--accent-red); border-radius: 8px; font-size: 0.95em; color: var(--card-text); background-color: var(--card-bg); outline: none; transition: box-shadow 0.2s; }
         .cat-dropdown { font-weight: 600; color: var(--accent-red); cursor: pointer; }
@@ -49,7 +52,7 @@
 <body>
     <div id="grid-view">
         <header class="top-nav">
-            <div class="nav-left"><img class="logo-icon" src="https://i.postimg.cc/bvcWFCz1/iptv.png" alt="Logo"></div>
+            <div class="nav-left"><img class="logo-icon" src="https://i.postimg.cc/gjQQGW5z/image.png" alt="Logo"></div>
             <div class="nav-right">
                 <select id="categoryDropdown" class="cat-dropdown"></select>
                 <input type="text" id="searchInput" class="search-box" placeholder="Search channels...">
