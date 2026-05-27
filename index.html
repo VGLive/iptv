@@ -20,9 +20,15 @@
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-gradient) fixed; color: var(--main-text); }
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(204, 0, 0, 0.15); position: sticky; top: 0; z-index: 100; }
         .nav-left { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { width: 50px; height: 50px; object-fit: contain; border-radius: 6px; }
+        
+        /* Logo set to exact height of the search box */
+        .logo-icon { width: 42px; height: 42px; object-fit: contain; border-radius: 6px; }
+        
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .cat-dropdown, .search-box { padding: 10px 15px; border: 2px solid var(--accent-red); border-radius: 8px; font-size: 0.95em; color: var(--card-text); background-color: var(--card-bg); outline: none; transition: box-shadow 0.2s; }
+        
+        /* Inputs locked to 42px height to match logo perfectly */
+        .cat-dropdown, .search-box { height: 42px; padding: 8px 15px; border: 2px solid var(--accent-red); border-radius: 8px; font-size: 0.95em; color: var(--card-text); background-color: var(--card-bg); outline: none; transition: box-shadow 0.2s; }
+        
         .cat-dropdown { font-weight: 600; color: var(--accent-red); cursor: pointer; }
         .cat-dropdown:focus, .search-box:focus { box-shadow: 0 0 8px rgba(204, 0, 0, 0.4); }
         .search-box { width: 220px; }
