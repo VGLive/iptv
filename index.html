@@ -26,11 +26,14 @@
         .cat-dropdown { font-weight: 600; color: var(--accent-red); cursor: pointer; }
         .cat-dropdown:focus, .search-box:focus { box-shadow: 0 0 8px rgba(204, 0, 0, 0.4); }
         .search-box { width: 220px; }
+        
+        /* Mobile Optimization */
         @media (max-width: 768px) {
             .top-nav { flex-direction: column; gap: 12px; padding: 12px 15px; }
-            .nav-right { width: 100%; flex-direction: column; gap: 10px; }
-            .cat-dropdown, .search-box { width: 100%; }
+            .nav-right { width: 100%; flex-direction: row; gap: 10px; }
+            .cat-dropdown, .search-box { flex: 1; min-width: 0; width: 50%; padding: 8px 10px; font-size: 0.85em; }
         }
+
         #grid-view { min-height: 100vh; }
         .grid-container { padding: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 15px; max-width: 1200px; margin: 0 auto; }
@@ -144,13 +147,13 @@
             
             ui.configure({
                 addBigPlayButton: true, addSeekBar: false,
-                controlPanelElements: ['play_pause','time_and_duration','mute','volume','spacer','overflow_menu','fullscreen'],
+                controlPanelElements: ['play_pause','time_and_duration','mute','volume','spacer','fullscreen','overflow_menu'],
                 seekBarColors: { base: 'white', buffered: 'red', played: 'green' }
             });
             p.configure({ manifest: { defaultPresentationDelay: 5 }, streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2, safeSeekOffset: 5 } });
             
             p.load(url).then(() => v.play().catch(()=>{})).catch(()=>{});
-            v.addEventListener("play", () => v.muted = true, { once: true });
+            v.addEventListener("play", () => v.muted = false, { once: true });
         }
     </script>
 </body>
