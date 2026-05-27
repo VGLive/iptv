@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VPTV</title>
-    
     <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css"/>
-
-    <link rel="icon" href="https://i.ibb.co/GSxcq7W/Jio-TV.png">
-
+    <link rel="icon" href="https://i.postimg.cc/gjQQGW5z/image.png">
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #ffe6e6 0%, #ffb3b3 100%); 
@@ -19,197 +16,53 @@
             --accent-red: #cc0000; 
             --hover-red: #ffcccc; 
         }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed; 
-            color: var(--main-text);
-        }
-
-        /* --- NAVIGATION BAR STYLES --- */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(204, 0, 0, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon { width: 35px; height: 35px; }
-
-        .nav-left h1 {
-            color: var(--accent-red);
-            font-size: 1.8em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .cat-dropdown, .search-box {
-            padding: 10px 15px;
-            border: 2px solid var(--accent-red);
-            border-radius: 8px;
-            font-size: 0.95em;
-            color: var(--card-text);
-            background-color: var(--card-bg);
-            outline: none;
-            transition: box-shadow 0.2s;
-        }
-
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg-gradient) fixed; color: var(--main-text); }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(204, 0, 0, 0.15); position: sticky; top: 0; z-index: 100; }
+        .nav-left { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 35px; height: 35px; object-fit: contain; border-radius: 6px; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .cat-dropdown, .search-box { padding: 10px 15px; border: 2px solid var(--accent-red); border-radius: 8px; font-size: 0.95em; color: var(--card-text); background-color: var(--card-bg); outline: none; transition: box-shadow 0.2s; }
         .cat-dropdown { font-weight: 600; color: var(--accent-red); cursor: pointer; }
         .cat-dropdown:focus, .search-box:focus { box-shadow: 0 0 8px rgba(204, 0, 0, 0.4); }
         .search-box { width: 220px; }
-
-        /* Mobile Optimization */
         @media (max-width: 768px) {
-            .top-nav {
-                flex-direction: column;
-                gap: 12px;
-                padding: 12px 15px;
-            }
-            .nav-right {
-                width: 100%;
-                flex-direction: column;
-                gap: 10px;
-            }
-            .cat-dropdown, .search-box {
-                width: 100%; /* Full width on mobile */
-            }
+            .top-nav { flex-direction: column; gap: 12px; padding: 12px 15px; }
+            .nav-right { width: 100%; flex-direction: column; gap: 10px; }
+            .cat-dropdown, .search-box { width: 100%; }
         }
-
-        /* --- GRID VIEW STYLES --- */
         #grid-view { min-height: 100vh; }
         .grid-container { padding: 20px; }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 15px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .card {
-            background-color: var(--card-bg);
-            color: var(--card-text);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(204, 0, 0, 0.1); 
-            padding: 12px;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .card:hover {
-            transform: translateY(-4px);
-            background-color: var(--hover-red);
-            box-shadow: 0 8px 15px rgba(204, 0, 0, 0.2);
-        }
-        
-        .card img {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-            margin-bottom: 10px;
-            background: #1e1e1e; 
-            border-radius: 8px;
-            padding: 5px;
-        }
-        
-        .card .title {
-            font-size: 0.9em;
-            line-height: 1.3;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            font-weight: 600;
-        }
-        
-        .loader {
-            text-align: center;
-            font-size: 1.2em;
-            margin-top: 50px;
-            font-weight: bold;
-        }
-
-        /* --- PLAYER VIEW STYLES --- */
-        #player-view {
-            display: none; 
-            position: fixed;
-            inset: 0;
-            background: #000;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: #000;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 15px; max-width: 1200px; margin: 0 auto; }
+        .card { background-color: var(--card-bg); color: var(--card-text); border-radius: 12px; box-shadow: 0 4px 6px rgba(204,0,0,0.1); padding: 12px; cursor: pointer; transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .card:hover { transform: translateY(-4px); background-color: var(--hover-red); box-shadow: 0 8px 15px rgba(204,0,0,0.2); }
+        .card img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 10px; background: #1e1e1e; border-radius: 8px; padding: 5px; }
+        .card .title { font-size: 0.9em; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-weight: 600; }
+        .loader { text-align: center; font-size: 1.2em; margin-top: 50px; font-weight: bold; }
+        #player-view { display: none; position: fixed; inset: 0; background: #000; align-items: center; justify-content: center; z-index: 1000; }
+        video { width: 100%; height: 100%; object-fit: contain; background: #000; }
     </style>
 </head>
 <body>
-
     <div id="grid-view">
         <header class="top-nav">
-            <div class="nav-left">
-                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                    <rect width="90" height="70" x="5" y="15" fill="#cc0000" rx="12"/>
-                    <polygon fill="white" points="40,35 40,65 65,50"/>
-                </svg>
-                <h1>VPTV</h1>
-            </div>
+            <div class="nav-left"><img class="logo-icon" src="https://i.postimg.cc/gjQQGW5z/image.png" alt="Logo"></div>
             <div class="nav-right">
                 <select id="categoryDropdown" class="cat-dropdown"></select>
                 <input type="text" id="searchInput" class="search-box" placeholder="Search channels...">
             </div>
         </header>
-
         <div id="loading" class="loader">Loading channels...</div>
-        
-        <div class="grid-container">
-            <div class="grid" id="channelGrid"></div>
-        </div>
+        <div class="grid-container"><div class="grid" id="channelGrid"></div></div>
     </div>
-
     <div id="player-view" class="shaka-video-container">
         <video id="v" autoplay muted playsinline preload="metadata"></video>
     </div>
-
     <script>
         const PLAYLIST_URL = 'https://iptv-org.github.io/iptv/languages/hin.m3u';
         let allChannels = []; 
-
         const params = new URLSearchParams(window.location.search);
-        const streamUrl = params.get('url');
-        const channelName = params.get('name');
+        const streamUrl = params.get('url'), channelName = params.get('name');
 
         if (streamUrl) {
             document.getElementById('grid-view').style.display = 'none';
@@ -220,151 +73,84 @@
             initGrid();
         }
 
-        // --- GRID & LOGIC ---
         async function initGrid() {
             try {
-                const response = await fetch(PLAYLIST_URL);
-                const data = await response.text();
-                allChannels = parseM3U(data);
-                
+                const res = await fetch(PLAYLIST_URL);
+                allChannels = parseM3U(await res.text());
                 document.getElementById('loading').style.display = 'none';
-                
                 renderDropdown();
                 filterChannels();
-
                 document.getElementById('categoryDropdown').addEventListener('change', filterChannels);
                 document.getElementById('searchInput').addEventListener('input', filterChannels);
-            } catch (error) {
+            } catch (e) {
                 document.getElementById('loading').innerText = 'Error loading playlist.';
-                console.error(error);
             }
         }
 
         function parseM3U(data) {
-            const lines = data.split('\n');
             const channels = [];
-            let currentChannel = {};
-
-            lines.forEach(line => {
+            let curr = {};
+            data.split('\n').forEach(line => {
                 line = line.trim();
                 if (line.startsWith('#EXTINF:')) {
-                    const logoMatch = line.match(/tvg-logo="([^"]+)"/);
-                    currentChannel.logo = logoMatch ? logoMatch[1] : 'https://via.placeholder.com/80x80.png?text=No+Logo';
-                    
-                    const groupMatch = line.match(/group-title="([^"]+)"/);
-                    currentChannel.group = groupMatch ? groupMatch[1] : 'Other';
-
-                    const parts = line.split(',');
-                    currentChannel.name = parts.length > 1 ? parts[parts.length - 1].trim() : 'Unknown';
-                } else if (line && !line.startsWith('#')) {
-                    currentChannel.url = line;
-                    
-                    // ONLY push the channel if the stream URL is HTTPS
-                    if (currentChannel.url.startsWith('https://')) {
-                        channels.push({...currentChannel});
-                    }
-                    
-                    currentChannel = {}; 
+                    curr.logo = (line.match(/tvg-logo="([^"]+)"/) || [])[1] || 'https://via.placeholder.com/80x80.png?text=No+Logo';
+                    curr.group = (line.match(/group-title="([^"]+)"/) || [])[1] || 'Other';
+                    curr.name = line.split(',').pop().trim() || 'Unknown';
+                } else if (line && !line.startsWith('#') && line.startsWith('https://')) {
+                    curr.url = line;
+                    channels.push({...curr});
+                    curr = {}; 
                 }
             });
             return channels;
         }
 
         function renderDropdown() {
-            const dropdown = document.getElementById('categoryDropdown');
-            dropdown.innerHTML = '';
-
-            const categoryCounts = { 'All Categories': allChannels.length };
-            allChannels.forEach(channel => {
-                categoryCounts[channel.group] = (categoryCounts[channel.group] || 0) + 1;
-            });
-
-            const sortedCategories = ['All Categories', ...Object.keys(categoryCounts).filter(cat => cat !== 'All Categories').sort()];
-
-            sortedCategories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category;
-                option.innerText = `${category} (${categoryCounts[category]})`;
-                dropdown.appendChild(option);
+            const dd = document.getElementById('categoryDropdown');
+            const counts = { 'All Categories': allChannels.length };
+            allChannels.forEach(c => counts[c.group] = (counts[c.group] || 0) + 1);
+            ['All Categories', ...Object.keys(counts).filter(k => k !== 'All Categories').sort()].forEach(cat => {
+                dd.appendChild(new Option(`${cat} (${counts[cat]})`, cat));
             });
         }
 
         function filterChannels() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const selectedCategory = document.getElementById('categoryDropdown').value;
-
-            const filteredChannels = allChannels.filter(channel => {
-                const matchesCategory = selectedCategory === 'All Categories' || channel.group === selectedCategory;
-                const matchesSearch = channel.name.toLowerCase().includes(searchTerm);
-                return matchesCategory && matchesSearch;
-            });
-
-            renderCards(filteredChannels);
-        }
-
-        function renderCards(channelsToRender) {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const cat = document.getElementById('categoryDropdown').value;
             const grid = document.getElementById('channelGrid');
             grid.innerHTML = ''; 
             
-            if (channelsToRender.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-weight: bold;">No channels found.</p>';
-                return;
-            }
+            const filtered = allChannels.filter(c => (cat === 'All Categories' || c.group === cat) && c.name.toLowerCase().includes(term));
+            
+            if (!filtered.length) return grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;font-weight:bold;">No channels found.</p>';
 
-            channelsToRender.forEach(channel => {
+            filtered.forEach(c => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `
-                    <img src="${channel.logo}" alt="${channel.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/80x80.png?text=No+Logo'">
-                    <div class="title">${channel.name}</div>
-                `;
-                
-                card.onclick = () => {
-                    const url = encodeURIComponent(channel.url);
-                    const name = encodeURIComponent(channel.name);
-                    window.open(`${window.location.pathname}?url=${url}&name=${name}`, '_blank');
-                };
-                
+                card.innerHTML = `<img src="${c.logo}" alt="${c.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/80x80.png?text=No+Logo'"><div class="title">${c.name}</div>`;
+                card.onclick = () => window.open(`${window.location.pathname}?url=${encodeURIComponent(c.url)}&name=${encodeURIComponent(c.name)}`, '_blank');
                 grid.appendChild(card);
             });
         }
 
-        // --- PLAYER LOGIC ---
         async function initPlayer(url) {
             shaka.polyfill.installAll();
-            if (!shaka.Player.isBrowserSupported()) {
-                alert("Browser not supported!");
-                return;
-            }
-
+            if (!shaka.Player.isBrowserSupported()) return alert("Browser not supported!");
+            
             const v = document.getElementById("v");
-            const c = document.getElementById("player-view");
-            v.muted = true; 
-
             const p = new shaka.Player();
-            const ui = new shaka.ui.Overlay(p, c, v);
+            const ui = new shaka.ui.Overlay(p, document.getElementById("player-view"), v);
             await p.attach(v);
-
+            
             ui.configure({
-                addBigPlayButton: true,
-                addSeekBar: false,
+                addBigPlayButton: true, addSeekBar: false,
                 controlPanelElements: ['play_pause','time_and_duration','mute','volume','spacer','fullscreen','overflow_menu'],
                 seekBarColors: { base: 'white', buffered: 'red', played: 'green' }
             });
-
-            p.configure({
-                manifest: { defaultPresentationDelay: 5 },
-                streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2, safeSeekOffset: 5 }
-            });
-
-            try {
-                await p.load(url);
-                v.play().catch(()=>{});
-            } catch(e) {
-                console.error("Stream loading failed", e);
-            }
-
-            v.addEventListener("play", () => { v.muted = true; }, { once: true });
+            p.configure({ manifest: { defaultPresentationDelay: 5 }, streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2, safeSeekOffset: 5 } });
+            
+            p.load(url).then(() => v.play().catch(()=>{})).catch(()=>{});
+            v.addEventListener("play", () => v.muted = false, { once: true });
         }
     </script>
 </body>
