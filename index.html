@@ -15,10 +15,12 @@
         .nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
         .logo-icon { height: 60px; width: auto; object-fit: contain; border-radius: 6px; }
         
-        .cat-dropdown, .search-box { height: 42px; padding: 8px 15px; border: 2px solid #cc0000; border-radius: 8px; font-size: 0.95em; color: #333; background: #fff; outline: none; }
+        /* Reduced height, padding, and font-size for dropdown and search */
+        .cat-dropdown, .search-box { height: 32px; padding: 4px 10px; border: 2px solid #cc0000; border-radius: 8px; font-size: 0.85em; color: #333; background: #fff; outline: none; }
         .cat-dropdown { font-weight: 600; color: #cc0000; cursor: pointer; }
         .cat-dropdown:focus, .search-box:focus { box-shadow: 0 0 8px rgba(204,0,0,0.4); }
-        .search-box { width: 220px; }
+        /* Reduced search box width */
+        .search-box { width: 160px; }
         
         @media (max-width: 768px) {
             .top-nav { flex-direction: column; padding: 12px 15px; }
