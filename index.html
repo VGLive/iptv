@@ -142,7 +142,7 @@
             p.configure({ manifest: { defaultPresentationDelay: 5 }, streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2, safeSeekOffset: 5 } });
             
             p.load(url).then(() => v.play().catch(()=>{})).catch(()=>{});
-            v.addEventListener("play", () => v.muted = false, { once: true });
+            v.addEventListener("play", () => v.muted = true, { once: true });
         }
     </script>
 </body>
