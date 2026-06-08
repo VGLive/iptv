@@ -15,11 +15,9 @@
         .nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
         .logo-icon { height: 60px; width: auto; object-fit: contain; border-radius: 6px; }
         
-        /* Reduced height, padding, and font-size for dropdown and search */
         .cat-dropdown, .search-box { height: 32px; padding: 4px 10px; border: 2px solid #cc0000; border-radius: 8px; font-size: 0.85em; color: #333; background: #fff; outline: none; }
         .cat-dropdown { font-weight: 600; color: #cc0000; cursor: pointer; }
         .cat-dropdown:focus, .search-box:focus { box-shadow: 0 0 8px rgba(204,0,0,0.4); }
-        /* Reduced search box width */
         .search-box { width: 160px; }
         
         @media (max-width: 768px) {
@@ -59,13 +57,11 @@
 
     <script>
         let allChannels = []; 
-        const params = new URLSearchParams(window.location.search);
-        const streamUrl = params.get('url'), channelName = params.get('name');
+        const streamUrl = new URLSearchParams(window.location.search).get('url');
 
         if (streamUrl) {
             document.getElementById('grid-view').style.display = 'none';
             document.getElementById('player-view').style.display = 'flex';
-            if (channelName) document.title = channelName;
             initPlayer(streamUrl);
         } else {
             initGrid();
@@ -120,7 +116,7 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `<img src="${c.logo}" alt="${c.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/80x80.png?text=No+Logo'"><div class="title">${c.name}</div>`;
-                card.onclick = () => window.open(`${window.location.pathname}?url=${encodeURIComponent(c.url)}&name=${encodeURIComponent(c.name)}`, '_blank');
+                card.onclick = () => window.open(`https://iptvone.pages.dev/?url=${c.url}`, '_blank');
                 grid.appendChild(card);
             });
         }
