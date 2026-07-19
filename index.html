@@ -91,7 +91,7 @@
     
     <div id="player-view">
         <div class="shaka-video-container" id="player-container">
-            <video id="video" autoplay playsinline preload="metadata"></video>
+            <video id="video" autoplay muted playsinline preload="metadata"></video>
         </div>
     </div>
 
@@ -120,7 +120,9 @@
                         curr.group = (line.match(/group-title="([^"]+)"/) || [])[1] || 'Other';
                         curr.name = line.split(',').pop().trim() || 'Unknown';
                     } else if (line.startsWith('http')) {
-                        allChannels.push({...curr, url: line});
+                        if (line.startsWith('https://')) {
+                            allChannels.push({...curr, url: line});
+                        }
                         curr = {}; 
                     }
                 });
