@@ -4,35 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IPTV One</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css"/>
     <link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/02hBbWKp/IP.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root {            
-            --bg: #fef2f2; --card: rgba(255,255,255,0.85); --border: rgba(220,38,38,0.2);            
-            --red: #dc2626; --text: #1e293b; --muted: #64748b;        
+        :root { 
+            --bg: #fef2f2; --card: rgba(255,255,255,0.85); --border: rgba(220,38,38,0.2); 
+            --red: #dc2626; --text: #1e293b; --muted: #64748b; 
         }        
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }        
         body { background: radial-gradient(circle at top left, #fee2e2, #fef2f2); min-height: 100vh; color: var(--text); }        
         .app { max-width: 1400px; margin: 0 auto; padding: 0 1rem 1.5rem; }
         
-        .header {            
-            position: sticky; top: 0; z-index: 100; background: transparent;            
-            display: flex; align-items: center; justify-content: space-between;            
-            padding: 1.2rem 0; margin-bottom: 1.5rem;        
+        .header { 
+            position: sticky; top: 0; z-index: 100; background: transparent; 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 1.2rem 0; margin-bottom: 1.5rem; 
         }                
-        .logo-area { display: flex; align-items: center; gap: 10px; flex-shrink: 0; white-space: nowrap; }        
-        .logo-icon { width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: var(--red); }        
+        .logo-area { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }        
+        .logo-icon { width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; }        
         .logo-icon img { max-width: 100%; max-height: 100%; border-radius: 8px; object-fit: contain; }
         .actions { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
         
         .filter, .search { background: var(--card); border: 1px solid var(--border); border-radius: 16px; outline: none; transition: 0.3s; }        
         .filter:focus, .search:focus-within { border-color: var(--red); box-shadow: 0 0 8px rgba(220,38,38,0.2); }                
-        .filter {            
-            color: var(--text); padding: 0.5rem 2rem 0.5rem 1rem; cursor: pointer; -webkit-appearance: none; appearance: none;            
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");            
-            background-repeat: no-repeat; background-position: right 10px center; background-size: 1em; max-width: 200px; text-overflow: ellipsis; white-space: nowrap;        
+        .filter { 
+            color: var(--text); padding: 0.5rem 2rem 0.5rem 1rem; cursor: pointer; appearance: none; 
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e"); 
+            background-repeat: no-repeat; background-position: right 10px center; background-size: 1em; max-width: 200px; text-overflow: ellipsis; white-space: nowrap; 
         }                
         .search { display: flex; align-items: center; padding: 0.5rem 1rem; width: 100%; max-width: 250px; }        
         .search input { background: transparent; border: none; outline: none; width: 100%; color: var(--text); padding-right: 10px; }        
@@ -40,9 +42,9 @@
         .search i { color: var(--red); }
         
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; }        
-        .card {            
-            background: var(--card); border-radius: 20px; padding: 1rem 0.5rem; border: 1px solid var(--border);            
-            cursor: pointer; text-align: center; transition: 0.3s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);        
+        .card { 
+            background: var(--card); border-radius: 20px; padding: 1rem 0.5rem; border: 1px solid var(--border); 
+            cursor: pointer; text-align: center; transition: 0.3s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
         }        
         .card:hover { transform: translateY(-4px); background: #fee2e2; border-color: rgba(220,38,38,0.4); box-shadow: 0 10px 20px -5px rgba(220,38,38,0.15); }        
         .card-logo { width: 80px; height: 80px; margin: 0 auto 10px; background: lightgrey; border-radius: 18px; padding: 8px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }        
@@ -52,11 +54,10 @@
         
         @media (max-width: 650px) {            
             .app { padding: 0 0.5rem 1.5rem; }            
-            .header { padding: 1rem 0; display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: nowrap; }            
-            .logo-area { margin-right: auto; display: flex; align-items: center; }            
-            .logo-icon { width: 70px; height: 70px; font-size: 2rem; }            
-            .actions { gap: 6px; display: flex; justify-content: flex-end; align-items: center; }            
-            .filter { padding: 0.4rem 1.6rem 0.4rem 0.6rem; font-size: 0.8rem; width: auto; max-width: 110px; background-position: right 6px center; background-size: 0.8em; border-radius: 12px; }            
+            .header { padding: 1rem 0; width: 100%; }            
+            .logo-icon { width: 70px; height: 70px; }            
+            .actions { gap: 6px; }            
+            .filter { padding: 0.4rem 1.6rem 0.4rem 0.6rem; font-size: 0.8rem; max-width: 110px; background-position: right 6px center; background-size: 0.8em; border-radius: 12px; }            
             .search { padding: 0.4rem 0.8rem; border-radius: 12px; max-width: 140px; }            
             .search input { font-size: 0.85rem; }            
             .grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }            
@@ -64,9 +65,9 @@
         }
 
         .loader { text-align: center; font-size: 1.2em; margin-top: 50px; font-weight: bold; color: var(--muted); }
-        #player-view { display: none; position: fixed; inset: 0; background: #000; align-items: center; justify-content: center; z-index: 1000; }
-        .shaka-video-container { width: 100%; height: 100%; position: relative; background: #000; display: flex; align-items: center; justify-content: center; }
-        video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+        #player-view { display: none; position: fixed; inset: 0; background: #000; z-index: 1000; }
+        .shaka-video-container { width: 100%; height: 100%; position: relative; display: flex; align-items: center; justify-content: center; }
+        video { width: 100%; height: 100%; object-fit: contain; }
     </style>
 </head>
 <body>
@@ -90,7 +91,7 @@
     
     <div id="player-view">
         <div class="shaka-video-container" id="player-container">
-            <video id="v" autoplay muted playsinline preload="metadata"></video>
+            <video id="video" autoplay playsinline preload="metadata"></video>
         </div>
     </div>
 
@@ -100,7 +101,7 @@
 
         if (streamUrl) {
             document.getElementById('grid-view').style.display = 'none';
-            document.getElementById('player-view').style.display = 'flex';
+            document.getElementById('player-view').style.display = 'block';
             initPlayer(streamUrl);
         } else {
             initGrid();
@@ -118,7 +119,7 @@
                         curr.logo = (line.match(/tvg-logo="([^"]+)"/) || [])[1] || 'https://via.placeholder.com/80x80.png?text=No+Logo';
                         curr.group = (line.match(/group-title="([^"]+)"/) || [])[1] || 'Other';
                         curr.name = line.split(',').pop().trim() || 'Unknown';
-                    } else if (line && !line.startsWith('#') && line.startsWith('https://')) {
+                    } else if (line.startsWith('http')) {
                         allChannels.push({...curr, url: line});
                         curr = {}; 
                     }
@@ -137,7 +138,7 @@
                 filterChannels();
                 dd.addEventListener('change', filterChannels);
                 document.getElementById('searchInput').addEventListener('input', filterChannels);
-            } catch (e) {
+            } catch {
                 document.getElementById('loading').innerText = 'Error loading playlist.';
             }
         }
@@ -161,7 +162,7 @@
                     </div>
                     <div class="card-name">${c.name}</div>
                 `;
-                card.onclick = () => window.open(`https://iptvone.pages.dev/?url=${c.url}`, '_blank');
+                card.onclick = () => window.open(window.location.pathname + '?url=' + encodeURIComponent(c.url), '_blank');
                 grid.appendChild(card);
             });
         }
@@ -170,19 +171,31 @@
             shaka.polyfill.installAll();
             if (!shaka.Player.isBrowserSupported()) return alert("Browser not supported!");
             
-            const v = document.getElementById("v");
-            const p = new shaka.Player();
-            const ui = new shaka.ui.Overlay(p, document.getElementById("player-view"), v);
-            await p.attach(v);
+            const video = document.getElementById("video");
+            const container = document.getElementById("player-container");
+            
+            const player = new shaka.Player();
+            await player.attach(video);
+            
+            const ui = new shaka.ui.Overlay(player, container, video);
             
             ui.configure({
-                addBigPlayButton: false, addSeekBar: false,
-                controlPanelElements: ['play_pause_buffering','mute_volume','spacer','overflow_menu','fullscreen'],
-	            overflowMenuButtons:  ['quality','captions','language','picture_in_picture']
+                addSeekBar: false,
+                controlPanelElements: ['play_pause_buffering', 'mute_volume', 'spacer', 'overflow_menu', 'fullscreen'],
+                overflowMenuButtons: ['quality', 'captions', 'language', 'picture_in_picture']
             });
-            p.configure({ manifest: { defaultPresentationDelay: 5 }, streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2, safeSeekOffset: 5 } });
             
-            p.load(url).then(() => v.play().catch(()=>{})).catch(()=>{});
+            player.configure({ 
+                manifest: { defaultPresentationDelay: 5 }, 
+                streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2, safeSeekOffset: 5 } 
+            });
+            
+            try {
+                await player.load(url);
+                video.play().catch(() => {});
+            } catch (e) {
+                console.error("Error loading stream", e);
+            }
         }
     </script>
 </body>
